@@ -17,6 +17,18 @@
 >
 > **Importante:** a DummyJSON **simula** `POST/PUT/DELETE` (responde como se tivesse salvo, mas não grava). Por isso o painel administrativo mantém as alterações no estado local: elas aparecem na tabela e somem ao recarregar a página.
 
+## Rotas
+
+| Rota | Área | Conteúdo |
+|---|---|---|
+| `/` | pública | catálogo com busca, filtro por categoria e paginação |
+| `/produtos/:id` | pública | detalhes do produto (rota dinâmica) |
+| `/carrinho` | pública | carrinho; finalizar a compra exige login |
+| `/login` | pública | login JWT (`POST /auth/login`) |
+| `/admin` | **protegida** | gestão de produtos: cadastrar, editar, excluir |
+
+Experimente direto em produção: [catálogo](https://xandemarcos-dev.github.io/loja-dummyjson/) · [produto 1](https://xandemarcos-dev.github.io/loja-dummyjson/produtos/1) · [admin (redireciona para o login)](https://xandemarcos-dev.github.io/loja-dummyjson/admin)
+
 ## Como executar localmente
 
 Pré-requisitos: Node.js 20+ e Yarn 1.x (`npm i -g yarn`).
@@ -116,6 +128,8 @@ e2e/                 # testes Playwright
 4. **Cadastro no admin:** validação do formulário e novo produto na tabela.
 
 Somente localizadores semânticos (`getByRole`, `getByLabel`).
+
+Os testes já se pagaram: o fluxo de autenticação encontrou um bug real. No React Router 7 a navegação roda em `startTransition`, então o logout feito em `/admin` atualizava a sessão antes da troca de rota, e a `ProtectedRoute` redirecionava para `/login` em vez do catálogo. A correção (`useTransitions={false}` no `BrowserRouter`, em `src/main.tsx`) foi validada pelo próprio teste no CI.
 
 ### 10. Pipeline de CI/CD e deploy em produção
 - **CI** (`.github/workflows/ci.yml`), em todo push e pull request: checkout → setup do Node 22 → `yarn install --frozen-lockfile` → typecheck → lint → Vitest → instalação do Chromium → Playwright. O relatório do Playwright é anexado ao run.
