@@ -1,0 +1,31 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--mantine-radius-md);
+  font-size: var(--mantine-font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  transition: background-color 120ms ease;
+
+  &:hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  }
+}
+
+.active {
+  color: var(--mantine-color-blue-filled);
+  background-color: var(--mantine-color-blue-light);
+
+  &:hover {
+    background-color: var(--mantine-color-blue-light-hover);
+  }
+}
+
+.block {
+  display: flex;
+  width: 100%;
+  padding: 10px 12px;
+}
