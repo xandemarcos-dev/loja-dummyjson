@@ -9,9 +9,13 @@ import { AppRoutes } from './routes/AppRoutes';
 // basename = `base` do vite.config.ts (ex.: /loja-dummyjson/), sem a barra final.
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+// useTransitions={false}: o React Router 7 faz a navegação dentro de startTransition (baixa prioridade).
+// No logout feito a partir de /admin isso deixava a ProtectedRoute renderizar antes da troca de rota,
+// já sem sessão, redirecionando para /login em vez do catálogo. Navegação síncrona elimina a corrida.
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename={basename}>
+    <BrowserRouter basename={basename} useTransitions={false}>
       <AppProviders>
         <AppRoutes />
       </AppProviders>
